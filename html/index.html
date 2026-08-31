@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>任務大廳｜跑腿平台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="navbar" id="navbar"></header>
+  <main class="container">
+    <h1 class="page-title">任務大廳</h1>
+    <div class="tabs" id="tabs">
+      <button type="button" class="tab active" data-scope="all">任務大廳</button>
+      <button type="button" class="tab" data-scope="my_posted">我發佈</button>
+      <button type="button" class="tab" data-scope="my_accepted">我接咗</button>
+    </div>
+    <section class="filter-bar card">
+      <div class="filter-grid">
+        <select id="f-city"><option value="">所有城市</option></select>
+        <select id="f-district"><option value="">所有地區</option></select>
+        <select id="f-category">
+          <option value="">所有分類</option>
+          <option value="buy">採買</option>
+          <option value="deliver">代送</option>
+          <option value="queue">排隊</option>
+          <option value="other">其他</option>
+        </select>
+        <select id="f-status">
+          <option value="">所有狀態</option>
+          <option value="pending">待接單</option>
+          <option value="in_progress">進行中</option>
+          <option value="completed">已送達</option>
+          <option value="finished">已完成</option>
+          <option value="cancelled">已取消</option>
+        </select>
+        <select id="f-sort">
+          <option value="created_desc">最新發佈</option>
+          <option value="reward_desc">報酬最高</option>
+        </select>
+        <input type="number" id="f-minReward" min="0" step="1" placeholder="最低報酬 NT$">
+      </div>
+      <button type="button" id="btn-reset" class="btn btn-outline btn-sm">重設篩選</button>
+    </section>
+    <div id="task-list"></div>
+    <div id="pagination" class="pagination"></div>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

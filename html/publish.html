@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>發佈任務｜跑腿平台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="navbar" id="navbar"></header>
+  <main class="container">
+    <h1 class="page-title">發佈任務</h1>
+    <div id="region-banner"></div>
+    <form id="publish-form" novalidate>
+      <section class="card form-section">
+        <h2 class="section-title">基本資料</h2>
+        <div class="form-group">
+          <label for="title">任務標題 <span class="required">*</span></label>
+          <input type="text" id="title" maxlength="50" placeholder="例如：幫買星巴克特大杯拿鐵">
+          <div class="field-hint"><span id="title-count">0</span>/50</div>
+          <div class="field-error" data-err></div>
+        </div>
+        <div class="form-group">
+          <label for="category">分類 <span class="required">*</span></label>
+          <select id="category">
+            <option value="">請揀分類</option>
+            <option value="buy">採買</option>
+            <option value="deliver">代送</option>
+            <option value="queue">排隊</option>
+            <option value="other">其他</option>
+          </select>
+          <div class="field-error" data-err></div>
+        </div>
+        <div class="form-group">
+          <label for="rewardFee">報酬（NT$）<span class="required">*</span></label>
+          <input type="number" id="rewardFee" min="50" step="1" placeholder="最少 NT$50">
+          <div class="field-hint">跑腿費最少 NT$50</div>
+          <div class="field-error" data-err></div>
+        </div>
+        <div class="form-group">
+          <label for="itemSize">物品大小（可選）</label>
+          <select id="itemSize">
+            <option value="">唔填</option>
+            <option value="small">細</option>
+            <option value="medium">中</option>
+            <option value="large">大</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="card form-section">
+        <h2 class="section-title">取貨地點</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="city">城市 <span class="required">*</span></label>
+            <select id="city"><option value="">選擇城市</option></select>
+            <div class="field-error" data-err></div>
+          </div>
+          <div class="form-group">
+            <label for="district">地區 <span class="required">*</span></label>
+            <select id="district" disabled><option value="">先揀城市</option></select>
+            <div class="field-error" data-err></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="addressDetail">詳細地址 <span class="required">*</span></label>
+          <input type="text" id="addressDetail" maxlength="100" placeholder="街道、門牌、樓層">
+          <div class="field-hint">接單之後跑腿者先睇到</div>
+          <div class="field-error" data-err></div>
+        </div>
+      </section>
+
+      <section class="card form-section">
+        <h2 class="section-title">目的地（可選）</h2>
+        <p class="section-note">唔填 = 送返取貨地點；要填就要城市 / 地區 / 地址三欄一齊填</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="destCity">城市</label>
+            <select id="destCity"><option value="">同取貨地點</option></select>
+          </div>
+          <div class="form-group">
+            <label for="destDistrict">地區</label>
+            <select id="destDistrict" disabled><option value="">先揀城市</option></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="destAddress">詳細地址</label>
+          <input type="text" id="destAddress" maxlength="100" placeholder="街道、門牌、樓層">
+        </div>
+      </section>
+
+      <section class="card form-section">
+        <h2 class="section-title">聯絡資料</h2>
+        <div class="form-group">
+          <label for="contactName">取件聯絡人 <span class="required">*</span></label>
+          <input type="text" id="contactName" maxlength="20" placeholder="2–20 個字">
+          <div class="field-error" data-err></div>
+        </div>
+        <div class="form-group">
+          <label for="contactPhone">聯絡電話 <span class="required">*</span></label>
+          <input type="tel" id="contactPhone" maxlength="8" placeholder="91234567">
+          <div class="field-hint">香港手機 8 位數字；接單之後跑腿者先睇到</div>
+          <div class="field-error" data-err></div>
+        </div>
+      </section>
+
+      <section class="card form-section">
+        <h2 class="section-title">時間同描述</h2>
+        <div class="form-group">
+          <label for="deadline">期望完成時間（可選）</label>
+          <input type="datetime-local" id="deadline">
+          <div class="field-hint">冇填會自動設為而家 + 24 小時；24 小時內冇人接會自動流標</div>
+          <div class="field-error" data-err></div>
+        </div>
+        <div class="form-group">
+          <label for="description">任務描述（可選）</label>
+          <textarea id="description" rows="4" maxlength="500" placeholder="要買咩牌子、咩 size、有冇唔食得嘅嘢、有咩要留意…"></textarea>
+          <div class="field-hint"><span id="desc-count">0</span>/500</div>
+        </div>
+      </section>
+
+      <button type="submit" class="btn btn-primary btn-block" id="btn-submit">發佈任務</button>
+    </form>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/publish.js"></script>
+</body>
+</html>

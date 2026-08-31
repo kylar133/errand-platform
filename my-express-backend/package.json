@@ -1,0 +1,28 @@
+{
+  "name": "errand-platform-backend",
+  "version": "1.0.0",
+  "description": "跑腿服務平台 API（doc/0825-document.docx 精簡版）",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18.11"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test",
+    "test:e2e": "node scripts/auth-e2e.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "5.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "node-cron": "^3.0.3"
+  }
+}
