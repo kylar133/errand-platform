@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import routes from './routes/index.js';
@@ -15,8 +16,10 @@ const FRONTEND_DIR = path.join(__dirname, '..', '..', 'html');
 export function createApp() {
   const app = express();
 
+  // 安全 headers（CSP / nosniff / frame 保護等）
+  app.use(helmet());
   // 跨域
-  app.use(cors()); 
+  app.use(cors());
   // 每個請求：traceId + 計時起點。
   app.use(requestContext);
 
