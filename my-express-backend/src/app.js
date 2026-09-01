@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import routes from './routes/index.js';
 import { requestContext } from './middlewares/requestContext.js';
+import { requestLogger } from './middlewares/requestLogger.js';
 import { notFound } from './middlewares/notFound.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
@@ -16,18 +17,18 @@ const FRONTEND_DIR = path.join(__dirname, '..', '..', 'html');
 export function createApp() {
   const app = express();
 
-  // 安全 headers（CSP / nosniff / frame 保護等）
+  app.disable('x-powered-by'); 
   app.use(helmet());
   // 跨域
   app.use(cors());
   // 每個請求：traceId + 計時起點。
   app.use(requestContext);
 
+  // 請求 log       
+  app.use(requestLogger);
+
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-
-  // 健康檢查
-  app.get('/api/health', (req, res) => res.send('Errand Platform API'));
 
   // API routes
   app.use('/api', routes);

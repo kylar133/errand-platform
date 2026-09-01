@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { AppError } from '../utils/AppError.js';
 
-// JWT 驗證 middleware。
-// 一定要登入嘅 API：router.get('/me', requireAuth, handler)
 export function requireAuth(req, res, next) {
   const token = getBearerToken(req);
   if (!token) return next(new AppError(4001));
@@ -18,11 +16,12 @@ export function requireAuth(req, res, next) {
 // 帶咗合法 Token 就解出 req.user，冇帶或者 Token 錯都當未登入照行。
 export function optionalAuth(req, res, next) {
   const token = getBearerToken(req);
-  if (!token) return next();
+  if (!token) 
+    return next();
   try {
     req.user = verifyToken(token);
   } catch {
-    // 有帶 Token 但唔合法 → 當未登入處理
+
   }
   next();
 }
