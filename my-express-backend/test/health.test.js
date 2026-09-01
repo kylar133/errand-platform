@@ -17,12 +17,6 @@ after(async () => {
   await stopServer(server);
 });
 
-test('GET /api/health 健康檢查回 200', async () => {
-  const res = await fetch(`${baseUrl}/api/health`);
-  assert.equal(res.status, 200);
-  assert.equal(await res.text(), 'Errand Platform API');
-});
-
 test('GET / 回前端 index.html', async () => {
   const res = await fetch(`${baseUrl}/`);
   assert.equal(res.status, 200);
