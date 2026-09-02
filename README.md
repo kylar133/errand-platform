@@ -1,3 +1,10 @@
+# Install and run
+1.install mongodb https://www.mongodb.com/try/download/community
+2.npm install
+3.npm run start
+
+
+
 # 跑腿服務平台（MVP）
 
 4 人初學者團隊專案。API 設計文件喺 `doc/0825-document.docx`
