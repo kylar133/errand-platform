@@ -4,7 +4,7 @@ import { ok } from '../middlewares/response.js';
 export const authController = {
   async register(req, res) {
     const result = await authService.register(req.body);
-    // 註冊成功即自動登入（前端唔使再 call login）
+    // 註冊成功即自動登入
     req.session.userId = String(result.userId);
     req.session.name = req.body.name;
     ok(res, result, 201);

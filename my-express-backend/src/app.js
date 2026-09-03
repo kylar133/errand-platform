@@ -25,9 +25,7 @@ export function createApp() {
 
   app.disable('x-powered-by');
   app.use(helmet());
-  // Session：cookie 淨係帶 session id，身份數據留喺 server。
-  // dev 用內建 MemoryStore（server 重啟會清 session）；上線要轉 connect-mongo。
-  // secure 上線（https）先開，而家開咗 http 會收唔到 cookie。
+  // 內建 MemoryStore（server 重啟會清 session）；上線要轉 connect-mongo。
   app.use(session({
     name: 'sid',
     secret: sessionSecret(),
@@ -36,7 +34,7 @@ export function createApp() {
     cookie: {
       httpOnly: true,
       sameSite: 'lax',
-      maxAge: 2 * 3600 * 1000, // 2 小時，同舊 JWT 過期時間一致
+      maxAge: 2 * 3600 * 1000, // 2 小時
       secure: process.env.NODE_ENV === 'production',
     },
   }));
