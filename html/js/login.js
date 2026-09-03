@@ -40,10 +40,11 @@
     try {
       // skipAuthRedirect：帳號密碼錯後端都係回 4001，
       // 唔可以自動跳轉（呢度本身就係登入頁，會變死循環）
-      const body = await api.post('/auth/login',
+      await api.post('/auth/login',
         { email: email.value.trim(), password: password.value },
         { skipAuthRedirect: true });
-      setToken(body.accessToken);
+      // 後端已設 session cookie，淨係記個旗標就夠
+      markLoggedIn();
       location.href = nextUrl();
     } catch (err) {
       if (err.code === 4001) showErr('帳號或密碼錯誤');

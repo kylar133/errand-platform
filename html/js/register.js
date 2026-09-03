@@ -50,17 +50,9 @@
         name: fields.name.value.trim(),
         phone: fields.phone.value,
       });
-      // 註冊成功 → 自動登入（順滑入）→ 首頁
-      try {
-        const loginBody = await api.post('/auth/login',
-          { email: fields.email.value.trim(), password: fields.password.value },
-          { skipAuthRedirect: true });
-        setToken(loginBody.accessToken);
-        location.href = 'index.html';
-      } catch (loginErr) {
-        // 自動登入失敗（罕見）→ 去登入頁（唔好 toast：跳頁之後睇唔到）
-        location.href = 'login.html';
-      }
+      // 註冊成功 → 後端已自動登入（session cookie 已設）→ 首頁
+      markLoggedIn();
+      location.href = 'index.html';
     } catch (err) {
       if (err.code === 1004) showFieldErrors({ email: '呢個 Email 已註冊' });
       else if (err.code === -1) toast(err.message, 'error');

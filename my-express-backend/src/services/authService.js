@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { User } from '../models/User.js';
 import { AppError } from '../utils/AppError.js';
 
@@ -21,7 +20,7 @@ export const authService = {
     return { userId: user._id, registeredAt: user.createdAt };
   },
 
-  // POST /api/auth/login
+  // POST /api/auth/login —— 只驗帳密，session 由 controller 設
   async login({ email, password }) {
     if (!email || !password) throw new AppError(1001);
 
@@ -31,12 +30,7 @@ export const authService = {
       throw new AppError(4001);
     }
 
-    return {
-      accessToken: jwt.sign({ id: user._id, name: user.name }, jwtSecret(), { expiresIn: jwtExpiresIn() }),
-      // refreshToken， 暫時用唔到，保留
-      refreshToken: jwt.sign({ id: user._id, name: user.name }, jwtSecret(), { expiresIn: '7d' }),
-      expiresIn: jwtExpiresInSeconds(),
-    };
+    return { userId: user._id, name: user.name, email: user.email };
   },
 
   // GET /api/auth/me —— 前端登入後要知自己User
@@ -62,23 +56,4 @@ function validateRegisterInput({ email, password, name, phone }) {
   if (!/^[456789]\d{7}$/.test(phone ?? '')) {
     throw new AppError(1001, 'Phone must be 8-digit HK mobile (e.g. 91234567)');
   }
-}
-
-// 每次 call 先讀 env，避免 dotenv load 順序問題
-function jwtSecret() {
-  return process.env.JWT_SECRET ?? 'dev-secret-do-not-use-in-production';
-}
-
-function jwtExpiresIn() {
-  return process.env.JWT_EXPIRES_IN ?? '7200s';
-}
-
-// 由 JWT_EXPIRES_IN（jsonwebtoken 格式：7200s / 2h / 30m / 7d）計出秒數回俾前端；
-// 解析唔到就 fallback 7200
-function jwtExpiresInSeconds() {
-  const raw = process.env.JWT_EXPIRES_IN ?? '7200s';
-  const match = /^(\d+)\s*([smhd]?)$/.exec(raw);
-  if (!match) return 7200;
-  const unit = { s: 1, m: 60, h: 3600, d: 86400 }[match[2] || 's'];
-  return Number(match[1]) * unit;
 }

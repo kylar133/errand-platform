@@ -43,7 +43,7 @@ npm run dev        # http://127.0.0.1:3000
 
 | 人 | 負責 | 狀態 |
 |---|---|---|
-| A | 基建 + Auth（統一回應、錯誤碼、traceId、JWT） | ✅ 完成 |
+| A | 基建 + Auth（統一回應、錯誤碼、traceId、Session） | ✅ 完成 |
 | B | 發佈任務 / 列表 / 詳情（後端 `src/routes/taskRoutes.js` 有 TODO 指引） | 進行中 |
 | C | 接單 / 狀態變更 | 待開始 |
 | D | 地區資料 + node-cron 排程（24h 流標）+ Postman | 待開始 |

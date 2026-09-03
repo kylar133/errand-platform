@@ -153,8 +153,8 @@ function showNavbar(activeKey = '') {
       box.innerHTML = `
         <span class="nav-user">👤 ${escapeHtml(me.name)}</span>
         <button type="button" class="btn btn-outline btn-sm" id="btn-logout">登出</button>`;
-      document.getElementById('btn-logout').addEventListener('click', () => {
-        clearToken();
+      document.getElementById('btn-logout').addEventListener('click', async () => {
+        await api.logout();
         App.currentUser = null;
         location.href = 'index.html';
       });

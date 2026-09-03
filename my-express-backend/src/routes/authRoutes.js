@@ -9,6 +9,7 @@ router.use(scope('auth_api'));
 
 router.post('/register', authController.register);
 router.post('/login', authController.login);
-router.get('/me', requireAuth, authController.me); 
+router.post('/logout', authController.logout);
+router.get('/me', requireAuth, authController.me);
 
 export default router;

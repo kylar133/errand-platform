@@ -6,7 +6,7 @@
 
 ```bash
 npm install
-cp .env.example .env   # 已有 .env 就跳過，記得改 JWT_SECRET
+cp .env.example .env   # 已有 .env 就跳過，記得改 SESSION_SECRET
 npm run dev            # 開發模式（改 code 自動重啟）；或者 npm start
 ```
 
@@ -47,7 +47,8 @@ npm run dev            # 開發模式（改 code 自動重啟）；或者 npm st
 
 - **4040**「Route Not Found」係團隊自訂錯誤碼（doc 表冇）
 - **`GET /api/auth/me`** 係團隊自訂（doc 冇，但前端需要知自己係邊個）
-- **冇 refresh endpoint**：login 會回 `refreshToken`（保留欄位），但精簡版唔實作換 token 嘅 API
+- **認證用 session cookie**（`express-session`，2 小時過期）：login/register 設 session + `Set-Cookie`（HttpOnly / SameSite=Lax），`POST /api/auth/logout` 銷毀 session。doc 原文係 JWT Bearer，已全線替換；前端只記「已登入」旗標，唔存 token
+- **CSRF 防護**：改動型請求（POST/PATCH/DELETE）帶 Origin 一定要同源，否則 403/4003（doc 冇定義）
 - **`timestamps: true`** 代替 doc 手動 createdAt/updatedAt 欄位，Mongoose 自動管理（排程 D 用嘅 updatedAt 會自動更新）
 - **手機格式用香港 8 位**（首位 4-9，例：`91234567`）；doc 原文係台灣格式，前端 `register.js`/`publish.js` 嘅 client 校驗都跟住改咗
 - **地區資料用香港三大區域 + 18 區**（`constants/regions.js`），doc 原文係台灣示範資料

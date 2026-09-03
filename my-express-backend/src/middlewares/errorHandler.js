@@ -30,9 +30,6 @@ export function errorHandler(err, req, res, next) {
     // Request body 唔係合法 JSON
     code = 1001;
     message = 'Invalid JSON body';
-  } else if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
-    code = 4001;
-    message = errorCodes[4001].message;
   }
 
   const httpStatus = errorCodes[code]?.httpStatus ?? 500;
