@@ -25,7 +25,7 @@ npm run dev            # 開發模式（改 code 自動重啟）；或者 npm st
 
 ## 點樣加新 API（照呢條路行）
 
-1. 需要新錯誤碼 → 加落 `constants/errorCodes.js`
+1. 需要新錯誤碼 → 加 `constants/errorCodes.js`
 2. 需要新資料 → 加 `models/` schema
 3. 業務邏輯（校驗 → 查/改 DB）→ 寫 `services/xxxService.js`，出錯 `throw new AppError(code)`
 4. 回應 → `controllers/xxxController.js`，用 `ok(res, body)` 就得
@@ -43,13 +43,12 @@ npm run dev            # 開發模式（改 code 自動重啟）；或者 npm st
 | C | 搶單（原子更新）/ 狀態變更 | → `routes/taskRoutes.js` 有 TODO |
 | D | 地區資料補齊 + node-cron 排程 + Postman collection + 整合測試 | `constants/regions.js` 有 TODO |
 
-## 團隊決定咗嘅嘢（doc 冇定義，記得同組員講）
 
-- **4040**「Route Not Found」係團隊自訂錯誤碼（doc 表冇）
-- **`GET /api/auth/me`** 係團隊自訂（doc 冇，但前端需要知自己係邊個）
-- **認證用 session cookie**（`express-session`，2 小時過期）：login/register 設 session + `Set-Cookie`（HttpOnly / SameSite=Lax），`POST /api/auth/logout` 銷毀 session。doc 原文係 JWT Bearer，已全線替換；前端只記「已登入」旗標，唔存 token
-- **CSRF 防護**：改動型請求（POST/PATCH/DELETE）帶 Origin 一定要同源，否則 403/4003（doc 冇定義）
+- **4040**「Route Not Found」係自訂錯誤碼
+- **`GET /api/auth/me`** 
+- **認證用 session cookie**（`express-session`，2 小時過期）：login/register 設 session + `Set-Cookie`（HttpOnly / SameSite=Lax），`POST /api/auth/logout` 銷毀 session。前端只記「已登入」旗標，唔存 token
+- **CSRF 防護**：改動型請求（POST/PATCH/DELETE）帶 Origin 一定要同源，否則 403/4003
 - **`timestamps: true`** 代替 doc 手動 createdAt/updatedAt 欄位，Mongoose 自動管理（排程 D 用嘅 updatedAt 會自動更新）
-- **手機格式用香港 8 位**（首位 4-9，例：`91234567`）；doc 原文係台灣格式，前端 `register.js`/`publish.js` 嘅 client 校驗都跟住改咗
-- **User email index 改咗名做 `uniq_user_email`**：舊 DB 起過 `email_1` index 嘅，開新代碼會撞 IndexOptionsConflict，要行一次 `mongosh errand --eval "db.users.dropIndex('email_1')"`（或者直接 `db.dropDatabase()` 清庫）
-- **地區資料用香港三大區域 + 18 區**（`constants/regions.js`），doc 原文係台灣示範資料
+- **手機格式用香港 8 位**（首位 4-9，例：`91234567`）；
+
+- **地區資料用香港三大區域 + 18 區**（`constants/regions.js`）
