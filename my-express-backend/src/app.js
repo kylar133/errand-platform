@@ -4,6 +4,7 @@ import session from 'express-session';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import routes from './routes/index.js';
+import { config } from './config/config.js';
 import { requestContext } from './middlewares/requestContext.js';
 import { requestLogger } from './middlewares/requestLogger.js';
 import { csrfProtection } from './middlewares/csrfProtection.js';
@@ -15,11 +16,6 @@ import { errorHandler } from './middlewares/errorHandler.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FRONTEND_DIR = path.join(__dirname, '..', '..', 'html');
 
-// 每次 call 先讀 env，避免 dotenv load 順序問題
-function sessionSecret() {
-  return process.env.SESSION_SECRET ?? 'dev-secret-do-not-use-in-production';
-}
-
 export function createApp() {
   const app = express();
 
@@ -28,14 +24,14 @@ export function createApp() {
   // 內建 MemoryStore（server 重啟會清 session）；上線要轉 connect-mongo。
   app.use(session({
     name: 'sid',
-    secret: sessionSecret(),
+    secret: config.sessionSecret,
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
       sameSite: 'lax',
       maxAge: 2 * 3600 * 1000, // 2 小時
-      secure: process.env.NODE_ENV === 'production',
+      secure: config.isProduction,
     },
   }));
   // 每個請求：traceId + 計時起點。

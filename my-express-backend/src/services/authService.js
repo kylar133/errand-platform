@@ -10,7 +10,7 @@ export const authService = {
     validateRegisterInput({ email, password, name, phone });
 
     // Email 重複
-    const exists = await User.findOne({ email });
+    const exists = await User.findOne({ email }).lean();
     if (exists) throw new AppError(1004);
     // 密碼加密
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
@@ -24,7 +24,7 @@ export const authService = {
   async login({ email, password }) {
     if (!email || !password) throw new AppError(1001);
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select('+password').lean();
     // 帳號或密碼錯
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new AppError(4001);
@@ -35,7 +35,7 @@ export const authService = {
 
   // GET /api/auth/me —— 前端登入後要知自己User
   async getProfile(userId) {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).lean();
     if (!user) throw new AppError(4001);
     return { userId: user._id, name: user.name, email: user.email, phone: user.phone };
   },

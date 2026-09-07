@@ -1,9 +1,10 @@
 import 'dotenv/config';
 import { createApp } from './app.js';
 import { connectDB, disconnectDB } from './config/db.js';
+import { config } from './config/config.js';
 import { pathToFileURL } from 'node:url';
 
-export async function startServer({ port = Number(process.env.PORT ?? 3000) } = {}) {
+export async function startServer({ port = config.port } = {}) {
   const app = createApp();
   return new Promise((resolve, reject) => {
     const server = app.listen(port);
@@ -40,7 +41,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     process.on('SIGTERM', stop);
   } catch (err) {
     if (err.code === 'EADDRINUSE') {
-      console.error(` Port ${process.env.PORT ?? 3000} 以佔用`);
+      console.error(` Port ${config.port} 以佔用`);
     } else {
       console.error(' start server error：' + err.message);
     }

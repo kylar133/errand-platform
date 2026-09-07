@@ -51,4 +51,5 @@ npm run dev            # 開發模式（改 code 自動重啟）；或者 npm st
 - **CSRF 防護**：改動型請求（POST/PATCH/DELETE）帶 Origin 一定要同源，否則 403/4003（doc 冇定義）
 - **`timestamps: true`** 代替 doc 手動 createdAt/updatedAt 欄位，Mongoose 自動管理（排程 D 用嘅 updatedAt 會自動更新）
 - **手機格式用香港 8 位**（首位 4-9，例：`91234567`）；doc 原文係台灣格式，前端 `register.js`/`publish.js` 嘅 client 校驗都跟住改咗
+- **User email index 改咗名做 `uniq_user_email`**：舊 DB 起過 `email_1` index 嘅，開新代碼會撞 IndexOptionsConflict，要行一次 `mongosh errand --eval "db.users.dropIndex('email_1')"`（或者直接 `db.dropDatabase()` 清庫）
 - **地區資料用香港三大區域 + 18 區**（`constants/regions.js`），doc 原文係台灣示範資料

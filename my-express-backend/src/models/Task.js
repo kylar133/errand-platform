@@ -8,8 +8,10 @@ const taskSchema = new mongoose.Schema(
       name: { type: String, required: true },
     },
     runner: {
-      id: String,
-      name: String,
+      type: {
+        id: String,
+        name: String,
+      },
       default: null, // 未接單
     },
 
@@ -36,10 +38,10 @@ const taskSchema = new mongoose.Schema(
     // deadline 預設「而家 + 24 小時」
     deadline: { type: Date, default: () => new Date(Date.now() + 24 * 3600 * 1000) },
   },
-  { timestamps: true }
+  { timestamps: true, strict: 'throw', versionKey: false }
 );
 
 // 任務列表常用索引
-taskSchema.index({ status: 1, city: 1, createdAt: -1 });
+taskSchema.index({ status: 1, city: 1, createdAt: -1 }, { name: 'idx_status_city_created' });
 
 export const Task = mongoose.model('Task', taskSchema);
