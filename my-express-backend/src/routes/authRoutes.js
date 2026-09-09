@@ -4,7 +4,7 @@ import { scope } from '../middlewares/response.js';
 import { authController } from '../controllers/authController.js';
 
 const router = Router();
-//全域權限
+//設置res.locals.module
 router.use(scope('auth_api'));
 
 router.post('/register', authController.register);

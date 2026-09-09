@@ -15,7 +15,6 @@ export function ok(res, body = null, statusCode = 200) {
 }
 
 // route 設定 module
-// router.use(scope('auth_api'));
 export function scope(module) {
   return (req, res, next) => {
     res.locals.module = module;

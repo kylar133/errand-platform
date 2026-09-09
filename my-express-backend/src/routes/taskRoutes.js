@@ -17,7 +17,7 @@ import { scope } from '../middlewares/response.js';
 //     原子更新，避免兩個人同時搶到同一單。
 
 const router = Router();
-
+//設置res.locals.module
 router.use(scope('errand_api'));
 
 // router.post('/tasks', requireAuth, taskController.createTask);
