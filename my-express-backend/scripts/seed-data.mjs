@@ -7,7 +7,7 @@ import { User } from '../src/models/User.js';
 import { Task } from '../src/models/Task.js';
 
 const HOUR = 3600 * 1000;
-const PASSWORD = 'Passw0rd123';
+const PASSWORD = 'aaa123123';
 
 const USERS = [
   { email: 'seed-xiaomei@example.com', name: '小美', phone: '91234567' },
@@ -87,7 +87,7 @@ try {
   })));
 
   console.log(`\nSeed 完成：${users.length} 個帳號 + ${tasks.length} 單任務`);
-  console.log('登入帳號（密碼一律 Passw0rd123）：');
+  console.log(`登入帳號（密碼一律 ${PASSWORD}）：`);
   for (const u of users) console.log(`  ${u.name}  ${u.email}`);
   console.log('\n任務一覽：');
   for (const t of tasks) console.log(`  [${t.status}] HK$${t.rewardFee} ${t.title}（${t.city}${t.district}）`);
