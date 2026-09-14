@@ -62,7 +62,7 @@
     if (title.length < 2 || title.length > 50) errs.title = '標題要 2–50 個字';
     if (!els.category.value) errs.category = '請揀分類';
     const fee = parseInt(els.rewardFee.value, 10);
-    if (!Number.isInteger(fee) || fee < 50) errs.rewardFee = '報酬要係整數，最少 NT$50';
+    if (!Number.isInteger(fee) || fee < 50) errs.rewardFee = '報酬要係整數，最少 HK$50';
     if (!els.city.value) errs.city = '請揀城市';
     if (!els.district.value) errs.district = '請揀地區';
     if (!els.addressDetail.value.trim()) errs.addressDetail = '請填詳細地址';

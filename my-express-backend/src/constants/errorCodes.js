@@ -3,7 +3,7 @@
 export const errorCodes = {
   0:    { httpStatus: 200, message: 'Success' },
   1001: { httpStatus: 400, message: 'Invalid Parameters' },
-  1002: { httpStatus: 400, message: 'Fee Below Minimum (Min: 50)' },
+  1002: { httpStatus: 400, message: 'Fee Below Minimum (Min: HK$50)' },
   1003: { httpStatus: 400, message: 'Invalid Region' },
   1004: { httpStatus: 409, message: 'Email Already Registered' },
   2001: { httpStatus: 404, message: 'Task Not Found' },

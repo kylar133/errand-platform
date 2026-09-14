@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import { scope } from '../middlewares/response.js';
+import { requireAuth, optionalAuth } from '../middlewares/auth.js';
+import { taskController } from '../controllers/taskController.js';
 
-//   POST   /tasks                 B：發佈任務（requireAuth）
-//   GET    /tasks                 B：列表（optionalAuth；scope/status/地區/分頁/排序）
-//   GET    /tasks/:taskId         B：詳情（optionalAuth + 動態脫敏）
-//   POST   /tasks/:taskId/accept  C：搶單（requireAuth + findOneAndUpdate）
-//   PATCH  /tasks/:taskId/status  C：cancel / deliver / confirm
+//   POST   /tasks                 B：發佈任務（requireAuth）✅ M1
+//   GET    /tasks                 B：列表（optionalAuth；scope/status/地區/分頁/排序）✅ M1
+//   GET    /tasks/:taskId         B：詳情（optionalAuth + 動態脫敏）—— M2
+//   POST   /tasks/:taskId/accept  C：搶單（requireAuth + findOneAndUpdate）—— M3
+//   PATCH  /tasks/:taskId/status  C：cancel / deliver / confirm —— M3
 
 //   - 獎金rewardFee < 50 → throw new AppError(1002)；
 //     地區用 constants/regions.js 嘅 isValidRegion() 校驗，唔啱 throw new AppError(1003)。
@@ -20,7 +22,7 @@ const router = Router();
 //設置res.locals.module
 router.use(scope('errand_api'));
 
-// router.post('/tasks', requireAuth, taskController.createTask);
-// router.get('/tasks', optionalAuth, taskController.listTasks);
+router.post('/tasks', requireAuth, taskController.createTask);
+router.get('/tasks', optionalAuth, taskController.listTasks);
 
 export default router;

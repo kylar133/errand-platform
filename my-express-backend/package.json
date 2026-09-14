@@ -11,7 +11,8 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "test": "node --test",
-    "test:e2e": "node scripts/auth-e2e.mjs"
+    "test:e2e": "node scripts/auth-e2e.mjs",
+    "seed": "node scripts/seed-data.mjs"
   },
   "keywords": [],
   "author": "",

@@ -17,7 +17,7 @@ const STATUS_LABELS = {
 // 錯誤碼 → 中文訊息（handleApiError 用；msg 本身多數係英文）
 const ERROR_MESSAGES = {
   1001: '參數有問題',
-  1002: '報酬最少 NT$50',
+  1002: '報酬最少 HK$50',
   1003: '地區唔合法',
   1004: 'Email 已註冊',
   2001: '任務唔存在',
@@ -51,7 +51,7 @@ function formatDateTime(iso) {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
-function money(n) { return 'NT$' + Number(n); }
+function money(n) { return 'HK$' + Number(n); }
 
 // Date → datetime-local input 嘅 value（本地牆鐘時間，無時區字尾）
 function toDatetimeLocalValue(date) {

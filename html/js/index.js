@@ -2,7 +2,7 @@
 // 列表 API 由 B 組員實現；未上線期間會收到 4040 → 顯示橫幅
 (function () {
   const state = {
-    scope: 'all', status: '', city: '', district: '',
+    scope: 'all', status: 'pending', city: '', district: '',
     category: '', minReward: '', sort: 'created_desc', page: 1,
   };
   const LIMIT = 10;
@@ -35,6 +35,9 @@
     if (!btn) return;
     document.querySelectorAll('.tab').forEach((t) => t.classList.toggle('active', t === btn));
     state.scope = btn.dataset.scope;
+    // 每個 tab 有自己默認狀態：大廳只睇待接單，我嘅單睇晒全部
+    state.status = btn.dataset.scope === 'all' ? 'pending' : '';
+    els.status.value = state.status;
     state.page = 1;
     loadTasks();
   });
@@ -54,8 +57,8 @@
   els.minReward.addEventListener('change', () => { state.minReward = els.minReward.value; state.page = 1; loadTasks(); });
 
   document.getElementById('btn-reset').addEventListener('click', () => {
-    Object.assign(state, { status: '', city: '', district: '', category: '', minReward: '', sort: 'created_desc', page: 1 });
-    els.city.value = ''; els.district.value = ''; els.category.value = ''; els.status.value = '';
+    Object.assign(state, { status: state.scope === 'all' ? 'pending' : '', city: '', district: '', category: '', minReward: '', sort: 'created_desc', page: 1 });
+    els.city.value = ''; els.district.value = ''; els.category.value = ''; els.status.value = state.status;
     els.sort.value = 'created_desc'; els.minReward.value = '';
     fillDistrictSelect('', els.district, '所有地區');
     loadTasks();
