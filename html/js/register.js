@@ -18,8 +18,8 @@
     const name = fields.name.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = 'Email 格式唔啱';
     const pwd = fields.password.value;
-    if (pwd.length < 8 || !/[A-Za-z]/.test(pwd) || !/\d/.test(pwd)) {
-      errs.password = '密碼要最少 8 位，包含英文字母同數字';
+    if (pwd.length < 8 || pwd.length > 20 || !/[A-Za-z]/.test(pwd) || !/\d/.test(pwd)) {
+      errs.password = '密碼要 8–20 位，包含英文字母同數字';
     }
     if (fields.confirm.value !== pwd) errs.confirm = '兩次密碼唔一致';
     if (name.length < 2 || name.length > 20) errs.name = '姓名要 2–20 個字';

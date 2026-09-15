@@ -1,13 +1,15 @@
 import bcrypt from 'bcryptjs';
 import { User } from '../models/User.js';
 import { AppError } from '../utils/AppError.js';
+import { checkFields, readText } from '../utils/validation.js';
 
 const SALT_ROUNDS = 10;
+const REGISTER_FIELDS = ['email', 'password', 'name', 'phone'];
 
 export const authService = {
   // POST /api/auth/register
-  async register({ email, password, name, phone }) {
-    validateRegisterInput({ email, password, name, phone });
+  async register(body) {
+    const { email, password, name, phone } = validateRegisterInput(body);
 
     // Email 重複
     const exists = await User.findOne({ email }).lean();
@@ -21,8 +23,8 @@ export const authService = {
   },
 
   // POST /api/auth/login —— 只驗帳密，session 由 controller 設
-  async login({ email, password }) {
-    if (!email || !password) throw new AppError(1001);
+  async login(body) {
+    const { email, password } = validateLoginInput(body);
 
     const user = await User.findOne({ email }).select('+password').lean();
     // 帳號或密碼錯
@@ -41,19 +43,38 @@ export const authService = {
   },
 };
 
-// 參數校驗
-function validateRegisterInput({ email, password, name, phone }) {
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email ?? '')) {
+// 參數校驗：白名單 + 必填先過一次，再做格式校驗
+// password 唔 trim（課程版都係咁做，避免改動用戶原本設定嘅密碼）
+function validateRegisterInput(body) {
+  checkFields(body, REGISTER_FIELDS, REGISTER_FIELDS);
+  const email = readText(body.email, 120);
+  const password = body.password;
+  const name = readText(body.name, 20);
+  const phone = readText(body.phone, 8);
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     throw new AppError(1001, 'Email format invalid');
   }
-  if (!password || password.length < 8 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
-    throw new AppError(1001, 'Password must be >= 8 chars with letters and digits');
+  if (typeof password !== 'string' || password.length < 8 || password.length > 20 ||
+      !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
+    throw new AppError(1001, 'Password must be 8-20 chars with letters and digits');
   }
-  if (!name || name.length < 2 || name.length > 20) {
+  if (name.length < 2) {
     throw new AppError(1001, 'Name must be 2-20 characters');
   }
   // 香港手機格式：8 位數字，首位 4-9
-  if (!/^[456789]\d{7}$/.test(phone ?? '')) {
+  if (!/^[456789]\d{7}$/.test(phone)) {
     throw new AppError(1001, 'Phone must be 8-digit HK mobile (e.g. 91234567)');
   }
+  return { email, password, name, phone };
+}
+
+function validateLoginInput(body) {
+  checkFields(body, ['email', 'password'], ['email', 'password']);
+  const email = readText(body.email, 120);
+  // 同 register 一致：8–20；超過 20 一定唔係有效密碼，早啲擋慳返 bcrypt
+  if (typeof body.password !== 'string' || body.password.length < 8 || body.password.length > 20) {
+    throw new AppError(1001, 'Password must be 8-20 characters');
+  }
+  return { email, password: body.password };
 }
